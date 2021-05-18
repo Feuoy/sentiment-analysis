@@ -1,0 +1,87 @@
+{
+  "name": "text_binary_classification",
+  "n_gpu": 1,
+  "model_arch": {
+    "type": "Bert",
+    "args": {
+      "num_classes": 1,
+      "bert_path": "data/pre-training/pretrained_model/chinese_wwm_ext_pytorch",
+      "trained": true
+    }
+  },
+  "dataset": {
+    "type": "HotspringDataSet",
+    "args": {
+      "data_dir": "data/corpus",
+      "data_name": "all_corpus_58k.csv",
+      "bert_path": "data/pre-training/pretrained_model/chinese_wwm_ext_pytorch"
+    }
+  },
+  "data_loader": {
+    "type": "DataLoader",
+    "args": {
+      "batch_size": 32,
+      "shuffle": true
+    }
+  },
+  "test_dataset": {
+    "type": "HotspringDataSet4TestAndInference",
+    "args": {
+      "data_dir": "data/testing",
+      "data_name": "test_corpus_6k.csv",
+      "bert_path": "data/pre-training/pretrained_model/chinese_wwm_ext_pytorch"
+    }
+  },
+  "test_data_loader": {
+    "type": "DataLoader",
+    "args": {
+      "batch_size": 16,
+      "shuffle": true
+    }
+  },
+  "inference_dataset": {
+    "type": "HotspringDataSet4TestAndInference",
+    "args": {
+      "data_dir": "data/prediction",
+      "data_name": "text_list.csv",
+      "bert_path": "data/pre-training/pretrained_model/chinese_wwm_ext_pytorch"
+    }
+  },
+  "inference_data_loader": {
+    "type": "DataLoader",
+    "args": {
+      "batch_size": 16,
+      "shuffle": false
+    }
+  },
+  "optimizer": {
+    "type": "AdamW",
+    "args": {
+    }
+  },
+  "lr_scheduler": {
+    "type": "get_linear_schedule_with_warmup",
+    "args": {
+      "num_warmup_steps": 2
+    }
+  },
+  "loss": [
+    "binary_crossentropy_loss"
+  ],
+  "metrics": [
+    "binary_accuracy",
+    "binary_precision",
+    "binary_recall",
+    "binary_f1",
+    "binary_auc"
+  ],
+  "trainer": {
+    "epochs": 100,
+    "saved": "saved/bert",
+    "save_period": 1,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 5,
+    "tensorboard": true
+  }
+}

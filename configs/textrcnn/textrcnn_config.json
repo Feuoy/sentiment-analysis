@@ -1,0 +1,98 @@
+{
+  "name": "text_binary_classification",
+  "n_gpu": 1,
+  "model_arch": {
+    "type": "TextRCNN",
+    "args": {
+      "rnn_type": "lstm",
+      "hidden_dim": 256,
+      "output_dim": 1,
+      "n_layers": 2,
+      "bidirectional": true,
+      "dropout": 0.5,
+      "freeze": true,
+      "batch_first": true
+    }
+  },
+  "dataset": {
+    "type": "HotspringDataSet",
+    "args": {
+      "data_dir": "data/corpus",
+      "data_name": "all_corpus_58k.csv",
+      "word_embedding_path": "data/pre-training/word_embedding/sgns.merge.char"
+    }
+  },
+  "data_loader": {
+    "type": "DataLoader",
+    "args": {
+      "batch_size": 128,
+      "shuffle": true
+    }
+  },
+  "test_dataset": {
+    "type": "HotspringDataSet4TestAndInference",
+    "args": {
+      "data_dir": "data/testing",
+      "data_name": "test_corpus_13k.csv",
+      "word_embedding_path": "data/pre-training/word_embedding/sgns.merge.char",
+      "model_word_embedding_path": "data/corpus/all_corpus_58k_word_embedding.pkl"
+    }
+  },
+  "test_data_loader": {
+    "type": "DataLoader",
+    "args": {
+      "batch_size": 128,
+      "shuffle": true
+    }
+  },
+  "inference_dataset": {
+    "type": "HotspringDataSet4TestAndInference",
+    "args": {
+      "data_dir": "data/prediction",
+      "data_name": "text_list.csv",
+      "word_embedding_path": "data/pre-training/word_embedding/sgns.merge.char",
+      "model_word_embedding_path": "data/corpus/all_corpus_58k_word_embedding.pkl"
+    }
+  },
+  "inference_data_loader": {
+    "type": "DataLoader",
+    "args": {
+      "batch_size": 128,
+      "shuffle": false
+    }
+  },
+  "optimizer": {
+    "type": "Adam",
+    "args": {
+      "lr": 0.001,
+      "weight_decay": 0,
+      "amsgrad": true
+    }
+  },
+  "loss": [
+    "binary_crossentropy_loss"
+  ],
+  "metrics": [
+    "binary_accuracy",
+    "binary_precision",
+    "binary_recall",
+    "binary_f1",
+    "binary_auc"
+  ],
+  "lr_scheduler": {
+    "type": "StepLR",
+    "args": {
+      "step_size": 50,
+      "gamma": 0.1
+    }
+  },
+  "trainer": {
+    "epochs": 100,
+    "saved": "saved/rcnn",
+    "save_period": 1,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 10,
+    "tensorboard": true
+  }
+}
