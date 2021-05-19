@@ -1,6 +1,6 @@
 # sentiment-analysis
 
-使用MLP、TextCNN、RNNs、Attention、RCNN、BERT做文本分类、情感分析，对比各模型在温泉旅游评论垂类语料上对情感分类任务的表现
+用MLP、TextCNN、RNN、LSTM、GRU、Attention、RCNN、BERT做文本分类、情感分析，对比各模型于温泉旅游评论垂类语料下在情感分类任务上的表现
 
 
 
